@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Confirm Dialog Example</title>
+</head>
+
+<body>
+    <button onclick="showConfirm()">Show Confirm</button>
+    <p id="result"></p>
+    <script>
+        function showConfirm() {
+            const result = confirm('Are you sure you want to continue?');
+            document.getElementById('result').textContent = result ? 'You clicked OK' : 'You clicked Cancel';
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>PDF Generation Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #333;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+
+        .content {
+            margin-bottom: 30px;
+        }
+
+        .footer {
+            text-align: center;
+            border-top: 1px solid #ccc;
+            padding-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f5f5f5;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Company Annual Report 2024</h1>
+        <p>Generated on: <span id="current-date"></span></p>
+    </div>
+
+    <div class="content">
+        <h2>Executive Summary</h2>
+        <p>This report provides a comprehensive overview of our company's performance and achievements in 2024. We have
+            made significant progress in various areas, including market expansion, product development, and customer
+            satisfaction.</p>
+
+        <h2>Key Performance Indicators</h2>
+        <table>
+            <tr>
+                <th>Metric</th>
+                <th>2023</th>
+                <th>2024</th>
+                <th>Change</th>
+            </tr>
+            <tr>
+                <td>Revenue</td>
+                <td>$1.2M</td>
+                <td>$1.8M</td>
+                <td>+50%</td>
+            </tr>
+            <tr>
+                <td>Customer Base</td>
+                <td>500</td>
+                <td>750</td>
+                <td>+50%</td>
+            </tr>
+            <tr>
+                <td>Employee Count</td>
+                <td>25</td>
+                <td>35</td>
+                <td>+40%</td>
+            </tr>
+        </table>
+
+        <div class="page-break"></div>
+
+        <h2>Market Analysis</h2>
+        <p>Our market analysis shows strong growth potential in the following sectors:</p>
+        <ul>
+            <li>Cloud Computing Services</li>
+            <li>Artificial Intelligence Solutions</li>
+            <li>Cybersecurity Products</li>
+            <li>IoT Integration Services</li>
+        </ul>
+
+        <h2>Future Outlook</h2>
+        <p>Based on current trends and market analysis, we anticipate continued growth in 2025. Our strategic
+            initiatives include:</p>
+        <ol>
+            <li>Expansion into European markets</li>
+            <li>Launch of new product line</li>
+            <li>Enhanced customer support system</li>
+            <li>Investment in R&D</li>
+        </ol>
+    </div>
+
+    <div class="footer">
+        <p>Confidential - For Internal Use Only</p>
+        <p>© 2024 Company Name. All rights reserved.</p>
+    </div>
+
+    <script>
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    </script>
+</body>
+
+</html>

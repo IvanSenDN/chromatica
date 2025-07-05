@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Iframe Content</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+
+        #success {
+            font-size: 24px;
+            color: #2196F3;
+            margin-top: 40px;
+            padding: 20px;
+            border: 2px solid #2196F3;
+            border-radius: 8px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+    <script>
+        window.onload = function () {
+            const shadowHost = document.createElement('div');
+            document.body.appendChild(shadowHost);
+            const shadowRoot = shadowHost.attachShadow({ mode: 'closed' });
+
+            const successDivHost = document.createElement('div');
+            shadowRoot.appendChild(successDivHost);
+            const successDivRoot = successDivHost.attachShadow({ mode: 'closed' });
+
+            const successDiv = document.createElement('div');
+            successDiv.id = 'success';
+            successDiv.textContent = 'Hello, World';
+            successDivRoot.appendChild(successDiv);
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Prompt Dialog Example</title>
+</head>
+
+<body>
+    <button onclick="showPrompt()">Show Prompt</button>
+    <p id="result"></p>
+    <script>
+        function showPrompt() {
+            const result = prompt('Please enter your name:', '');
+            document.getElementById('result').textContent = result ? `You entered: ${result}` : 'You canceled the input';
+        }
+    </script>
+</body>
+
+</html>

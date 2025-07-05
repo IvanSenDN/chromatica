@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>BeforeUnload Dialog Example</title>
+</head>
+
+<body>
+    <h2>Try to leave the page</h2>
+    <p>When you try to leave the page, a confirmation dialog will appear</p>
+    <a href="https://www.google.com">Go to Google</a>
+    <script>
+        window.onbeforeunload = function (e) {
+            e.preventDefault();
+            e.returnValue = 'Are you sure you want to leave the page?';
+            return e.returnValue;
+        };
+    </script>
+</body>
+
+</html>

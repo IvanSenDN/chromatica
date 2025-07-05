@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>File Chooser Example</title>
+    <style>
+        .file-section {
+            margin: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+
+        .preview-container {
+            margin-top: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .preview-item {
+            max-width: 200px;
+            border: 1px solid #ddd;
+            padding: 5px;
+        }
+
+        .preview-item img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .preview-item .file-info {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="file-section">
+        <h3>Select single file</h3>
+        <input type="file" id="singleFile" accept="image/*">
+        <p id="singleFileResult"></p>
+        <div id="singleFilePreview" class="preview-container"></div>
+    </div>
+
+    <div class="file-section">
+        <h3>Select multiple files</h3>
+        <input type="file" id="multipleFiles" multiple accept="image/*">
+        <p id="multipleFilesResult"></p>
+        <div id="multipleFilesPreview" class="preview-container"></div>
+    </div>
+
+    <script>
+        function createPreview(file, container) {
+            if (!file.type.startsWith('image/')) {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.innerHTML = `
+                    <div class="file-info">
+                        <div>Name: ${file.name}</div>
+                        <div>Type: ${file.type || 'Unknown'}</div>
+                        <div>Size: ${(file.size / 1024).toFixed(2)} KB</div>
+                    </div>
+                `;
+                container.appendChild(div);
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const div = document.createElement('div');
+                div.className = 'preview-item';
+                div.innerHTML = `
+                    <img src="${e.target.result}" alt="${file.name}">
+                    <div class="file-info">
+                        <div>Name: ${file.name}</div>
+                        <div>Type: ${file.type}</div>
+                        <div>Size: ${(file.size / 1024).toFixed(2)} KB</div>
+                    </div>
+                `;
+                container.appendChild(div);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        document.getElementById('singleFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            const container = document.getElementById('singleFilePreview');
+            container.innerHTML = '';
+
+            if (file) {
+                document.getElementById('singleFileResult').textContent = `Selected file: ${file.name}`;
+                createPreview(file, container);
+            } else {
+                document.getElementById('singleFileResult').textContent = 'File not selected';
+            }
+        });
+
+        document.getElementById('multipleFiles').addEventListener('change', function (e) {
+            const files = Array.from(e.target.files);
+            const container = document.getElementById('multipleFilesPreview');
+            container.innerHTML = '';
+
+            if (files.length > 0) {
+                const fileNames = files.map(file => file.name).join(', ');
+                document.getElementById('multipleFilesResult').textContent = `Selected files: ${fileNames}`;
+                files.forEach(file => createPreview(file, container));
+            } else {
+                document.getElementById('multipleFilesResult').textContent = 'Files not selected';
+            }
+        });
+    </script>
+</body>
+
+</html>

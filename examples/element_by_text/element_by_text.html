@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Element by Text Example</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 40px;
+            text-align: center;
+        }
+
+        button {
+            padding: 12px 24px;
+            font-size: 16px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #45a049;
+        }
+
+        #iframe-container {
+            margin-top: 20px;
+            min-height: 200px;
+        }
+
+        iframe {
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Element by Text Example</h1>
+    <button id="spawn-button">Spawn iframe</button>
+    <div id="shadow-host"></div>
+
+    <script>
+        const shadowHost = document.getElementById('shadow-host');
+        const shadowRoot = shadowHost.attachShadow({ mode: 'closed' });
+
+        const iframeContainer = document.createElement('div');
+        iframeContainer.id = 'iframe-container';
+        shadowRoot.appendChild(iframeContainer);
+
+        document.getElementById('spawn-button').addEventListener('click', function () {
+            setTimeout(() => {
+                const iframe = document.createElement('iframe');
+                iframe.src = 'iframe.html';
+                iframe.sandbox = 'allow-scripts';
+                iframeContainer.appendChild(iframe);
+            }, 5000);
+        });
+    </script>
+</body>
+
+</html>
