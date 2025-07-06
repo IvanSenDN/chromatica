@@ -31,6 +31,13 @@ impl Page {
         }
     }
 
+    pub async fn url(&self) -> Result<String> {
+        match self.frame_inner() {
+            Some(frame_inner) => frame_inner.url().await,
+            None => Err(anyhow!("Frame inner is dropped")),
+        }
+    }
+
     pub async fn default_timeout(&self) -> Duration {
         match self.frame_inner() {
             Some(frame_inner) => frame_inner.default_timeout().await,

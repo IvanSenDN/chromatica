@@ -93,6 +93,14 @@ impl Element {
         frame_inner.get_attributes(&self.backend_node_id).await
     }
 
+    pub async fn text(&self) -> Result<String> {
+        let frame_inner = match self.frame_inner() {
+            Some(frame_inner) => frame_inner,
+            None => return Err(anyhow!("Frame inner is not available")),
+        };
+        frame_inner.get_text(&self.backend_node_id).await
+    }
+
     pub async fn type_text(&self, text: &str, delay: Option<u64>) -> Result<()> {
         let frame_inner = match self.frame_inner() {
             Some(frame_inner) => frame_inner,

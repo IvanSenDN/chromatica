@@ -71,6 +71,13 @@ impl Element {
         }
     }
 
+    pub async fn text(&self) -> Result<String> {
+        match self {
+            Self::CDP(element) => element.text().await,
+            // Self::BiDi(element) => element.text().await,
+        }
+    }
+
     pub async fn type_text(&self, text: &str, delay: Option<u64>) -> Result<()> {
         match self {
             Self::CDP(element) => element.type_text(text, delay).await,

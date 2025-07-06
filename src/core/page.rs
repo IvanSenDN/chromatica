@@ -19,6 +19,13 @@ pub enum Page {
 }
 
 impl Page {
+    pub async fn url(&self) -> Result<String> {
+        match self {
+            Self::CDP(page) => page.url().await,
+            // Self::BiDi(page) => page.url().await,
+        }
+    }
+
     pub async fn default_timeout(&self) -> Duration {
         match self {
             Self::CDP(page) => page.default_timeout().await,

@@ -8,6 +8,20 @@ pub type TransitionType = String;
 pub type ScriptIdentifier = String;
 pub type ReferrerPolicy = String;
 
+#[derive(Deserialize)]
+pub struct NavigationEntry {
+    #[serde(rename = "id")]
+    pub id: u64,
+    #[serde(rename = "url")]
+    pub url: String,
+    #[serde(rename = "userTypedURL")]
+    pub user_typed_url: String,
+    #[serde(rename = "title")]
+    pub title: String,
+    #[serde(rename = "transitionType")]
+    pub transition_type: TransitionType,
+}
+
 ///Deserializable structs
 #[derive(Debug, Deserialize, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -731,4 +745,21 @@ impl<'a> SetWebLifecycleState<'a> {
     pub fn build(state: &'a str) -> Self {
         Self { state }
     }
+}
+
+#[derive(Serialize)]
+pub struct GetNavigationHistory {}
+
+impl GetNavigationHistory {
+    pub fn default() -> Self {
+        Self {}
+    }
+}
+
+#[derive(Deserialize)]
+pub struct GetNavigationHistoryResponse {
+    #[serde(rename = "currentIndex")]
+    pub current_index: u64,
+    #[serde(rename = "entries")]
+    pub entries: Vec<NavigationEntry>,
 }

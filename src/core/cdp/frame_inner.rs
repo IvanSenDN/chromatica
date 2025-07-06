@@ -1,9 +1,9 @@
 use super::connection::{Event, EventParams, Response};
 use super::domains::dom::{
-    BackendNodeId, DescribeNode, DescribeNodeResponse, Focus, GetAttributes, GetAttributesResponse,
-    GetBoxModel, GetBoxModelResponse, GetDocument, GetDocumentResponse, MinimalNode, NodeId,
-    PushNodesByBackendIdsToFrontend, PushNodesByBackendIdsToFrontendResponse,
-    ScrollIntoViewIfNeeded,
+    BackendNodeId, DescribeNode, DescribeNodeResponse, DescribeNodeResponseFull, Focus,
+    GetAttributes, GetAttributesResponse, GetBoxModel, GetBoxModelResponse, GetDocument,
+    GetDocumentResponse, MinimalNode, NodeId, PushNodesByBackendIdsToFrontend,
+    PushNodesByBackendIdsToFrontendResponse, ScrollIntoViewIfNeeded,
 };
 use super::domains::dom_storage::{
     DomStorageDisable, DomStorageEnable, GetDOMStorageItems, GetDOMStorageItemsResponse, Item,
@@ -14,8 +14,9 @@ use super::domains::input::{
 };
 use super::domains::page::{
     AddScriptToEvaluateOnNewDocument, AddScriptToEvaluateOnNewDocumentResponse, CaptureScreenshot,
-    CaptureScreenshotResponse, FrameId, Navigate, PrintToPDF, PrintToPDFResponse, Reload,
-    RemoveScriptToEvaluateOnNewDocument, ScriptIdentifier, Viewport,
+    CaptureScreenshotResponse, FrameId, GetNavigationHistory, GetNavigationHistoryResponse,
+    Navigate, PrintToPDF, PrintToPDFResponse, Reload, RemoveScriptToEvaluateOnNewDocument,
+    ScriptIdentifier, Viewport,
 };
 use super::domains::target::{ActivateTarget, CloseTarget};
 use super::element::Element;
@@ -215,6 +216,23 @@ impl FrameInner {
 
     pub fn frame_id(&self) -> Arc<FrameId> {
         self.frame_id.clone()
+    }
+
+    pub async fn url(&self) -> Result<String> {
+        let response = self
+            .send(
+                "Page.getNavigationHistory",
+                &GetNavigationHistory::default(),
+            )
+            .await?;
+        let url = response
+            .result_as::<GetNavigationHistoryResponse>()?
+            .entries
+            .last()
+            .ok_or_else(|| anyhow!("No navigation history"))?
+            .url
+            .clone();
+        Ok(url)
     }
 
     pub async fn node(&self, depth: i32) -> Result<MinimalNode> {
@@ -882,6 +900,23 @@ impl FrameInner {
             }
         }
         Ok(result)
+    }
+
+    pub async fn get_text(self: &Arc<Self>, backend_node_id: &BackendNodeId) -> Result<String> {
+        let self_clone = self.clone();
+        let response = self_clone
+            .send("DOM.describeNode", &DescribeNode::default(backend_node_id))
+            .await?;
+        let node = response.result_as::<DescribeNodeResponseFull>()?.node;
+
+        let first_child = node.children.as_ref().and_then(|children| children.first());
+
+        if let Some(first_child) = first_child {
+            let text = first_child.node_value.clone();
+            Ok(text)
+        } else {
+            Err(anyhow!("No text found"))
+        }
     }
 
     pub async fn type_text(
