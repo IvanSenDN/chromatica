@@ -363,7 +363,7 @@ impl Connection {
                                 Err(e) => {
                                     println!("Failed to parse message: {:?}", message);
                                     println!("Error: {:?}", e);
-                                    return;
+                                    continue;
                                 }
                             };
 
